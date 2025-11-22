@@ -3,7 +3,15 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 abstract class LocalNotifications {
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
+  static NotificationDetails notificationDetails = NotificationDetails(
+    android: AndroidNotificationDetails(
+      'id:0',
+      'SingleNotification',
+      importance: Importance.high,
+      priority: Priority.high,
+    ),
+    iOS: DarwinNotificationDetails(),
+  );
   static Future<void> init() async {
     InitializationSettings settings = InitializationSettings(
       android: AndroidInitializationSettings('@mipmap/ic_launcher'),
@@ -27,18 +35,9 @@ abstract class LocalNotifications {
   }
 
   static Future<void> showSingleNotifications() async {
-    NotificationDetails notificationDetails = NotificationDetails(
-      android: AndroidNotificationDetails(
-        'id:0',
-        'SingleNotification',
-        importance: Importance.high,
-        priority: Priority.max,
-      ),
-      iOS: DarwinNotificationDetails(),
-    );
     await flutterLocalNotificationsPlugin.show(
       0,
-      'sinlgeNote',
+      'sinlgenote',
       'body',
       notificationDetails,
     );
