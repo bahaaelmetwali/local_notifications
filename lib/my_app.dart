@@ -7,7 +7,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(body: Container()),
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.yellow,
+          title: Title(color: Colors.black, child: Text('Local Notifcations')),
+        ),
+        body: Container(),
+      ),
     );
   }
 }
