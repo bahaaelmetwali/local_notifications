@@ -86,8 +86,13 @@ abstract class LocalNotifications {
     );
   }
 
-  //cancelNotifcations
+  //cancelNotifcation
   static Future<void> cancelNotifcations(int id) async {
     await flutterLocalNotificationsPlugin.cancel(id);
+  }
+
+  //cancelAllNotifcation
+  static Future<void> cancelAllNotifcations() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
   }
 }

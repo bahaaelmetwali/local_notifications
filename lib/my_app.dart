@@ -94,6 +94,12 @@ class MyApp extends StatelessWidget {
                       ),
                     ],
                   ),
+                  TextButton(
+                    onPressed: () {
+                      LocalNotifications.cancelAllNotifcations();
+                    },
+                    child: Text('cancel all'),
+                  ),
                 ],
               ),
             ),
