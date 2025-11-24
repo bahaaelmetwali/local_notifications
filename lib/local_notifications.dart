@@ -1,15 +1,20 @@
+import 'dart:async';
 import 'dart:developer';
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:timezone/browser.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 abstract class LocalNotifications {
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  static onTap(NotificationResponse response) {}
+  static final StreamController<NotificationResponse> streamController =
+      StreamController();
+  //onTapNotifcations
+  static onTap(NotificationResponse response) {
+    streamController.add(response);
+  }
+
   //init_local_notifications
   static Future<void> init() async {
     InitializationSettings settings = InitializationSettings(
@@ -28,7 +33,7 @@ abstract class LocalNotifications {
   static NotificationDetails notificationDetails = NotificationDetails(
     android: AndroidNotificationDetails(
       'id:0',
-      'SingleNotification',
+      'NoteDetails',
       importance: Importance.high,
       priority: Priority.high,
       playSound: true,
@@ -43,6 +48,7 @@ abstract class LocalNotifications {
       'single',
       'body',
       notificationDetails,
+      payload: 'SingleNotifcation',
     );
   }
   //repeated notifications
@@ -55,6 +61,7 @@ abstract class LocalNotifications {
       RepeatInterval.everyMinute,
       notificationDetails,
       androidScheduleMode: AndroidScheduleMode.exact,
+      payload: 'RepeatedNotifications',
     );
   }
 
@@ -75,6 +82,12 @@ abstract class LocalNotifications {
       tz.TZDateTime.now(tz.local).add(const Duration(seconds: 10)),
       notificationDetails,
       androidScheduleMode: AndroidScheduleMode.exact,
+      payload: 'ScheduledNotifications',
     );
+  }
+
+  //cancelNotifcations
+  static Future<void> cancelNotifcations(int id) async {
+    await flutterLocalNotificationsPlugin.cancel(id);
   }
 }

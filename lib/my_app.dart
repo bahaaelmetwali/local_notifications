@@ -36,7 +36,12 @@ class MyApp extends StatelessWidget {
                         ),
                       ),
                       Spacer(),
-                      Icon(Icons.close, color: Colors.red),
+                      GestureDetector(
+                        onTap: () {
+                          LocalNotifications.cancelNotifcations(0);
+                        },
+                        child: Icon(Icons.close, color: Colors.red),
+                      ),
                     ],
                   ),
                   SizedBox(height: 40),
@@ -56,7 +61,12 @@ class MyApp extends StatelessWidget {
                         ),
                       ),
                       Spacer(),
-                      Icon(Icons.close, color: Colors.red),
+                      GestureDetector(
+                        onTap: () {
+                          LocalNotifications.cancelNotifcations(1);
+                        },
+                        child: Icon(Icons.close, color: Colors.red),
+                      ),
                     ],
                   ),
                   SizedBox(height: 40),
@@ -76,7 +86,12 @@ class MyApp extends StatelessWidget {
                         ),
                       ),
                       Spacer(),
-                      Icon(Icons.close, color: Colors.red),
+                      GestureDetector(
+                        onTap: () {
+                          LocalNotifications.cancelNotifcations(2);
+                        },
+                        child: Icon(Icons.close, color: Colors.red),
+                      ),
                     ],
                   ),
                 ],
