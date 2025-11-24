@@ -1,12 +1,50 @@
+import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:local_notifications/local_notifications.dart';
+import 'package:local_notifications/notifcation_details.dart';
 
-class MyApp extends StatelessWidget {
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  StreamSubscription? _notificationSubscription;
+
+  void onTapNotificatoin() {
+    _notificationSubscription = LocalNotifications.streamController.stream
+        .listen((response) {
+          log(response.payload!);
+          navigatorKey.currentState?.push(
+            MaterialPageRoute(
+              builder: (_) =>
+                  NotifcationDetailsScreen(notificationResponse: response),
+            ),
+          );
+        });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    onTapNotificatoin();
+  }
+
+  @override
+  void dispose() {
+    _notificationSubscription?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
