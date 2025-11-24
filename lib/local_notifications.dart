@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:timezone/browser.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -56,20 +57,23 @@ abstract class LocalNotifications {
       androidScheduleMode: AndroidScheduleMode.exact,
     );
   }
-  //scheduled notifications
 
+  //scheduled notifications
   static Future<void> showScheduledNotifications() async {
+    //initialize_time_zone
     tz.initializeTimeZones();
     final TimezoneInfo timezoneInfo = await FlutterTimezone.getLocalTimezone();
-    final String currentTimeZone = timezoneInfo.localizedName!.name;
-    log(currentTimeZone);
+    final String flutterTimeZone = timezoneInfo.identifier;
+    log(flutterTimeZone);
+    //set_local_time_zone
+    tz.setLocalLocation(tz.getLocation(flutterTimeZone));
+    //schedulednotifications
     await flutterLocalNotificationsPlugin.zonedSchedule(
       2,
       'Scheduled',
       'body',
       tz.TZDateTime.now(tz.local).add(const Duration(seconds: 10)),
       notificationDetails,
-
       androidScheduleMode: AndroidScheduleMode.exact,
     );
   }
