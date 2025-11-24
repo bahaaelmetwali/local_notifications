@@ -9,7 +9,7 @@ abstract class LocalNotifications {
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   static onTap(NotificationResponse response) {}
-
+  //init_local_notifications
   static Future<void> init() async {
     InitializationSettings settings = InitializationSettings(
       android: AndroidInitializationSettings('@mipmap/ic_launcher'),
@@ -23,18 +23,20 @@ abstract class LocalNotifications {
     );
   }
 
+  //notifaction details
+  static NotificationDetails notificationDetails = NotificationDetails(
+    android: AndroidNotificationDetails(
+      'id:0',
+      'SingleNotification',
+      importance: Importance.high,
+      priority: Priority.high,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('note'),
+    ),
+    iOS: DarwinNotificationDetails(),
+  );
+  //single notifications
   static Future<void> showSingleNotifications() async {
-    NotificationDetails notificationDetails = NotificationDetails(
-      android: AndroidNotificationDetails(
-        'id:0',
-        'SingleNotification',
-        importance: Importance.high,
-        priority: Priority.high,
-        playSound: true,
-        sound: RawResourceAndroidNotificationSound('note'),
-      ),
-      iOS: DarwinNotificationDetails(),
-    );
     await flutterLocalNotificationsPlugin.show(
       0,
       'single',
@@ -42,50 +44,31 @@ abstract class LocalNotifications {
       notificationDetails,
     );
   }
+  //repeated notifications
 
   static Future<void> showRepeatedNotifications() async {
-    NotificationDetails rnotificationDetails = NotificationDetails(
-      android: AndroidNotificationDetails(
-        'id:1',
-        'RepeatedNotification',
-        importance: Importance.high,
-        priority: Priority.high,
-        playSound: true,
-      ),
-      iOS: DarwinNotificationDetails(),
-    );
     await flutterLocalNotificationsPlugin.periodicallyShow(
       1,
       'repeated',
       'body',
       RepeatInterval.everyMinute,
-      rnotificationDetails,
+      notificationDetails,
       androidScheduleMode: AndroidScheduleMode.exact,
     );
   }
+  //scheduled notifications
 
   static Future<void> showScheduledNotifications() async {
     tz.initializeTimeZones();
     final TimezoneInfo timezoneInfo = await FlutterTimezone.getLocalTimezone();
     final String currentTimeZone = timezoneInfo.localizedName!.name;
     log(currentTimeZone);
-
-    NotificationDetails scheduledNotificationDetails = NotificationDetails(
-      android: AndroidNotificationDetails(
-        'id:2',
-        'scheduledNotification',
-        importance: Importance.high,
-        priority: Priority.high,
-        playSound: true,
-      ),
-      iOS: DarwinNotificationDetails(),
-    );
     await flutterLocalNotificationsPlugin.zonedSchedule(
       2,
       'Scheduled',
       'body',
       tz.TZDateTime.now(tz.local).add(const Duration(seconds: 10)),
-      scheduledNotificationDetails,
+      notificationDetails,
 
       androidScheduleMode: AndroidScheduleMode.exact,
     );
